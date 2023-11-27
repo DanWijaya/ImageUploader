@@ -1,6 +1,6 @@
 # Image Uploader App
 
-##Implementing Image Upload using various services in AWS. 
+## Implementing Image Upload using various services in AWS. 
 1. Cloud Architecture diagram
 ![Cloud Architecture Diagram](https://github.com/DanWijaya/ImageUploader/assets/32335870/ec4d1d77-cb82-43d8-981f-2981aa146c5a)
 
