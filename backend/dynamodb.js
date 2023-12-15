@@ -1,4 +1,5 @@
 require("dotenv").config({ path: "../.env" });
+const { v4: uuidv4 } = require("uuid");
 const AWS = require("aws-sdk");
 
 AWS.config.update({ region: process.env.AWS_BUCKET_REGION });
@@ -9,7 +10,7 @@ function insertItem({ fileKey, isPublic = false, description }) {
   var params = {
     TableName: "ImagesCollection",
     Item: {
-      ObjectId: { S: "1234" },
+      ObjectId: { S: fileKey },
       fileKey: { S: fileKey },
       IsPublic: { BOOL: isPublic },
       Description: { S: description },
@@ -34,13 +35,16 @@ function getAllPublicItem() {
   return dynamoDB.scan(params).promise();
 }
 
-function getAllItem() {
-  const params = {
-    TableName: "ImagesCollection",
-  };
+// function deleteItem(fileKey) {
+//   const params = {
+//     TableName: "ImagesCollection",
+//     Key: {
+//       fileKey: { S: fileKey },
+//     },
+//   };
 
-  return dynamoDB.scan(params).promise();
-}
+//   return dynamoDB.deleteItem(params, (err, data) => {});
+// }
 
 module.exports = {
   getAllPublicItem,

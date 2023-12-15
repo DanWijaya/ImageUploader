@@ -26,7 +26,7 @@ async function uploadImage(data) {
 
 function App() {
   const [file, setFile] = useState();
-  const [images, setImages] = useState([]);
+  const [allImages, setImages] = useState([]);
   const [allDescription, setAllDescriptionImages] = useState([]);
   const [description, setDescription] = useState("");
   const [isPublic, setIsPublic] = useState(false);
@@ -36,15 +36,14 @@ function App() {
       const response = await axios.get("/getimages/all");
       let descriptionList = [];
       let imagesList = [];
-
       if (Array.isArray(response.data)) {
         response.data.forEach((item) => {
           let imageItem = removeTypeDescriptors(item);
+          console.log(imageItem);
           descriptionList.push(imageItem.Description);
           imagesList.push(imageItem.fileKey);
         });
       }
-
       setAllDescriptionImages(descriptionList);
       setImages(imagesList);
     } catch (err) {
@@ -58,11 +57,17 @@ function App() {
 
   const submit = async (event) => {
     event.preventDefault();
+    console.log(isPublic, description, file);
     const result = await uploadImage({ image: file, description: description, isPublic: isPublic });
-    if (!result) {
-      setImages([result.imagePath, ...images]);
+
+    let imageList = allImages;
+    let descriptionList = allDescription;
+    if (result) {
+      imageList.push(result.imagePath);
+      descriptionList.push(result.description);
     }
-    setAllDescriptionImages([result.description, ...allDescription]);
+    setImages(imageList);
+    setAllDescriptionImages(descriptionList);
     setDescription("");
     setIsPublic(false);
     setFile(null);
@@ -73,6 +78,8 @@ function App() {
     setFile(file);
   };
 
+  console.log(allImages);
+  console.log(allDescription);
   return (
     <div
       style={{
@@ -106,12 +113,14 @@ function App() {
           alignItems: "center",
         }}
       >
-        {images.map((image, idx) => (
-          <div key={image}>
-            <img src={`/images/${image}`} style={{ maxWidth: "1000px", maxHeight: "1000px" }}></img>
-            <p style={{ textAlign: "center" }}>{allDescription[idx]}</p>
-          </div>
-        ))}
+        {allImages.map((image, idx) => {
+          return (
+            <div key={image}>
+              <img src={`/images/${image}`} style={{ maxWidth: "1000px", maxHeight: "1000px" }}></img>
+              <p style={{ textAlign: "center" }}>{allDescription[idx]}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
