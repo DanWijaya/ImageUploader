@@ -14,7 +14,7 @@ async function uploadImage(data) {
 
   try {
     const response = await axios.post(
-      `/imagesWithDesc?description=${description}&isPublic=${isPublic}`,
+      `http://localhost:8080/imagesWithDesc?description=${description}&isPublic=${isPublic}`,
       formData
     );
 
@@ -33,7 +33,7 @@ function App() {
 
   const getImages = async () => {
     try {
-      const response = await axios.get("/getimages/all");
+      const response = await axios.get("http://localhost:8080/getimages/all");
       let descriptionList = [];
       let imagesList = [];
       if (Array.isArray(response.data)) {
