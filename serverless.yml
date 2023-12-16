@@ -1,4 +1,4 @@
-service: image-uploader-bucket
+service: s3-image-uploader-bucket
 
 provider:
   name: aws
@@ -37,5 +37,5 @@ resources:
     FileBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: image-uploader-bucket
+        BucketName: s3-image-uploader-bucket
         AccessControl: PublicRead
